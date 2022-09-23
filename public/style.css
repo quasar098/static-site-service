@@ -1,0 +1,6 @@
+:not(i) {
+    font-family: Helvetica;
+}
+#adminTools {
+    display: none;
+}
