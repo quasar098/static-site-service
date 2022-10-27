@@ -2,22 +2,34 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Counter website</title>
+        <title>Static Websites</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <h3>Static Website Hoster Thing</h3>
+        <h4>Stats: </h4>
+        <p id="sitesHosted">0 site(s) have been hosted here</p>
+        <a href="/list.html" class="thing">Website list</a>
+        <br>
+        <h4>Upload Site:</h4>
+        <button type="button" id="lookForFile" onclick="uploadSite();">Drag and drop or click here</button>
+        <br><br><br><br><br><br>
+        <p>Admin sign in</p>
+        <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
+        <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
+        <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
+        <div id="admin-tools">
+            <br><br>
+            <p>Admin tools</p>
+            <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
+        </div>
+
+
+
         <script type="text/javascript">
-            async function incrementValue(amount) {
-                count.innerText = count.innerText*1+amount;
-                const result = await fetch("/api/increment", {method: 'POST'})
-                const jsonResult = await result.json();
-                count.innerText = jsonResult.count
-            }
-            async function updateCountBasedOnApi() {
-                const result = await fetch("/api/count")
-                const jsonResult = await result.json()
-                count.innerText = jsonResult.count;
-                if (localStorage.getItem("jwt")) {
-                    document.getElementById("adminTools").style.display = "block";
-                }
-            }
+            const adminToolsElm = document.getElementById("admin-tools");
+            const sitesHostedElm = document.getElementById('sitesHosted');
+            const lookForFileElm = document.getElementById('lookForFile');
             async function attemptSignIn() {
                 const result = await (fetch("/api/login", {
                     headers: {
@@ -34,38 +46,40 @@
                 localStorage.setItem("jwt", textResult);
                 window.location.reload();
             }
-            async function resetCount() {
-                const result = await fetch("/api/reset", {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify({token: localStorage.getItem("jwt")})
-                });
-            }
             function logout() {
                 localStorage.removeItem('jwt');
                 window.location.reload()
             }
-            updateCountBasedOnApi()
+            async function resetWebsites() {
+                if (confirm("Are you sure?")) {
+                    const result = await fetch("/api/reset", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({token: localStorage.getItem("jwt")})
+                    })
+                    const status = result.status;
+                    if (status != 200) {
+                        alert(status)
+                    }
+                    window.location.reload();
+                }
+            }
+            async function doOnLoad() {
+                setTimeout(() => {
+                    if (localStorage.getItem("jwt") != null) {
+                        adminToolsElm.style.display = "block";
+                    }
+                }, 100)
+                const result = await fetch("/api/get-sites", {method: "GET"});
+                const body = await result.json();
+                sitesHostedElm.innerText = body.length + " site(s) have been hosted here";
+            }
+            async function uploadSite() {
+
+            }
+            doOnLoad();
         </script>
-        <link rel="stylesheet" href="/style.css">
-    </head>
-    <body>
-        <h1>Counter</h1>
-        <p>Click to increment the counter</p>
-        <button onclick="incrementValue(1)" id="count">loading...</button>
-        <button onclick="updateCountBasedOnApi()" id="update">refresh</button>
-        <br><br>
-        <p>Admin sign in</p>
-        <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
-        <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
-        <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
-        <div id="adminTools">
-            <br><br>
-            <p>Admin tools</p>
-            <button id="resetCountButton" onclick="resetCount(); updateCountBasedOnApi()">Reset count</button>
-            <button id="logoutButton" onclick="logout()">Logout</button>
-        </div>
     </body>
 </html>

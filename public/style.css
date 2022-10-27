@@ -1,6 +1,24 @@
 :not(i) {
     font-family: Helvetica;
 }
-#adminTools {
+#admin-tools {
     display: none;
+}
+h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+h4 {
+    margin: 10px;
+    margin-left: 0px;
+}
+a {
+    color: #1e2ede;
+    display: block;
+}
+a.thing {
+    margin-bottom: 40px;
+}
+a:visited {
+    color: #1e2ede;
 }

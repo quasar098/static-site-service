@@ -5,6 +5,7 @@ const verifyToken = (req, res, next) => {
     const token = req.body.token;
     if (!token) {  // no token present
         res.status(403).send("A token is require for auth")
+        return;
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

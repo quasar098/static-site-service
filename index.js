@@ -6,6 +6,14 @@ const bcrypt = require('bcrypt')
 const auth = require("./middleware/auth");
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 37000
+const path = require("path");
+const fs = require('fs');
+
+function getDirectories(source) {
+    return fs.readdirSync(source, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name)
+}
 
 let jsonParser = bodyParser.json()
 
@@ -15,23 +23,19 @@ let admins = [
         password: "$2b$10$6qH9M1cmXqRnx3cDxronhuRX29sekxhanJw07wkuZ4gFH16eRdcHK"  // 'password' is the password
     }
 ]
-let count = 0
 
 app.use(express.static('public'))
 
-app.get('/api/count', (req, res) => {
-    res.status(200).send({count: count})
-})
-
-app.post('/api/increment', (req, res) => {
-    count += 1
-    res.status(200).send({count: count})
-})
-
 app.post('/api/reset', jsonParser, auth, (req, res) => {
-    count = 0
-    res.status(200).send({count: count})
+    fs.rm(path.join(__dirname, '/public/stored'), { recursive: true }, (err) => {
+        console.log(err)
+    })
+    fs.mkdir(path.join(__dirname, '/public/stored'), (err) => {
+        console.log(err);
+    })
+    res.status(200)
 })
+
 app.post('/api/login', jsonParser, (req, res) => {
     if (req.body.password && req.body.username) {
         bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -54,6 +58,11 @@ app.post('/api/login', jsonParser, (req, res) => {
         return res.status(401).send("Missing username or password");
     }
 })
+
+app.get("/api/get-sites", (req, res) => {
+    res.status(200).send(JSON.stringify(getDirectories(path.join(__dirname, '/public/stored'))))
+})
+
 app.use('/api/*', (req, res) => {
     res.status(404).send("invalid api request")
 })

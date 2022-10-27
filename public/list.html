@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>List of Sites</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <a href="/" class="thing">Go Back</a>
+        <div id="sites">
+
+        </div>
+        <script type="text/javascript">
+            let sitesElm = document.getElementById('sites');
+            let sites = [];
+            let isAdmin = false;
+            function newSiteElm(name) {
+                let elm = document.createElement("a");
+                elm.innerText = name;
+                elm.setAttribute("href", "/stored/" + name + "/index.html");
+                return elm;
+            }
+            function updateSites() {
+                sitesElm.innerHTML = "";
+                sites.forEach((item, i) => {
+                    sitesElm.appendChild(newSiteElm(item))
+                });
+            }
+            async function doOnLoad() {
+                setTimeout(() => {
+                    isAdmin = localStorage.getItem("jwt");
+
+                }, 100)
+                const result = await fetch("/api/get-sites", {method: "GET"});
+                sites = await result.json();
+                updateSites();
+            }
+            doOnLoad();
+        </script>
+    </body>
+</html>
