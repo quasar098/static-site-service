@@ -16,6 +16,22 @@ a {
     color: #1e2ede;
     display: block;
 }
+input {
+    border-color: #888888;
+    outline: none;
+}
+input:invalid + .upload {
+    opacity: 0;
+}
+.site-id {
+    border-color: #50ffb1;
+}
+.site-id:invalid {
+    border-color: #ff3562;
+}
+.site-id:placeholder-shown {
+    border-color: #ff3562;
+}
 a.thing {
     margin-bottom: 40px;
 }

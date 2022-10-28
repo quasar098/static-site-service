@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 37000
 const path = require("path");
 const fs = require('fs');
+const restrictip = require("./middleware/restrictip");
 
 function getDirectories(source) {
     return fs.readdirSync(source, { withFileTypes: true })
@@ -24,19 +25,19 @@ let admins = [
     }
 ]
 
-app.use(express.static('public'))
+app.use(restrictip, express.static('public'))
 
-app.post('/api/reset', jsonParser, auth, (req, res) => {
+app.post('/api/reset', jsonParser, restrictip, auth, (req, res) => {
     fs.rm(path.join(__dirname, '/public/stored'), { recursive: true }, (err) => {
-        console.log(err)
+        err != null && console.log(err)
+        fs.mkdir(path.join(__dirname, '/public/stored'), (err) => {
+            err != null && console.log(err);
+            res.status(200);
+        })
     })
-    fs.mkdir(path.join(__dirname, '/public/stored'), (err) => {
-        console.log(err);
-    })
-    res.status(200)
 })
 
-app.post('/api/login', jsonParser, (req, res) => {
+app.post('/api/login', jsonParser, restrictip, (req, res) => {
     if (req.body.password && req.body.username) {
         bcrypt.hash(req.body.password, 10, function(err, hash) {
             let adminsList = admins.filter(i => req.body.username == i.username);
@@ -70,5 +71,5 @@ app.use('/api/*', (req, res) => {
 app.use('*', express.static('public/page-not-found'))
 
 app.listen(port, () => {
-    console.log(`Counter app listening on port ${port}`)
+    console.log(`Listening on listening on port ${port}`)
 })

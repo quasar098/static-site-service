@@ -12,8 +12,11 @@
         <a href="/list.html" class="thing">Website list</a>
         <br>
         <h4>Upload Site:</h4>
-        <button type="button" id="lookForFile" onclick="uploadSite();">Drag and drop or click here</button>
-        <br><br><br><br><br><br>
+        <input type="text" pattern="[A-Za-z]{3,16}" class="site-id" placeholder="Site ID (3-16 letters)" spellcheck="false">
+        <input type="file" accept=".zip"/>
+        <br><br>
+        <button onclick="uploadSite();" class="upload">Upload Site</button>
+        <br><br><br><br>
         <p>Admin sign in</p>
         <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
         <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
@@ -61,7 +64,10 @@
                     })
                     const status = result.status;
                     if (status != 200) {
-                        alert(status)
+                        alert(status  == 401 ? 'sign in again' : status)
+                        if (status == 401) {
+                            localStorage.removeItem("jwt")
+                        }
                     }
                     window.location.reload();
                 }
