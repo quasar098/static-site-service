@@ -1,3 +1,5 @@
 node_modules
 package-lock.json
 .env
+public/stored/*
+!public/stored/helpme.txt

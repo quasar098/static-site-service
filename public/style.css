@@ -23,13 +23,13 @@ input {
 input:invalid + .upload {
     opacity: 0;
 }
-.site-id {
+#site-id {
     border-color: #50ffb1;
 }
-.site-id:invalid {
+#site-id:invalid {
     border-color: #ff3562;
 }
-.site-id:placeholder-shown {
+#site-id:placeholder-shown {
     border-color: #ff3562;
 }
 a.thing {

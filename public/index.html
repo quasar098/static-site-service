@@ -12,9 +12,11 @@
         <a href="/list.html" class="thing">Website list</a>
         <br>
         <h4>Upload Site:</h4>
-        <input type="text" pattern="[A-Za-z]{3,16}" class="site-id" placeholder="Site ID (3-16 letters)" spellcheck="false">
-        <input type="file" accept=".zip"/>
-        <br><br>
+        <h5>Name your site:</h5>
+        <input type="text" pattern="([A-Za-z]|\s){3,16}" id="site-id" placeholder="Site ID (3-16 letters)" spellcheck="false" required>
+        <h5>Upload the folder</h5>
+        <input type="file" webkitdirectory directory mozdirectory class="hidden" id="upload-folder"/>
+        <h5>Send to servers</h5>
         <button onclick="uploadSite();" class="upload">Upload Site</button>
         <br><br><br><br>
         <p>Admin sign in</p>
@@ -29,63 +31,6 @@
 
 
 
-        <script type="text/javascript">
-            const adminToolsElm = document.getElementById("admin-tools");
-            const sitesHostedElm = document.getElementById('sitesHosted');
-            const lookForFileElm = document.getElementById('lookForFile');
-            async function attemptSignIn() {
-                const result = await (fetch("/api/login", {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify({username: usernameBox.value, password: passwordBox.value})
-                }));
-                if (result.status >= 400 && 600 > result.status) {
-                    alert("Invalid credentials!");
-                    return;
-                }
-                const textResult = await result.text();
-                localStorage.setItem("jwt", textResult);
-                window.location.reload();
-            }
-            function logout() {
-                localStorage.removeItem('jwt');
-                window.location.reload()
-            }
-            async function resetWebsites() {
-                if (confirm("Are you sure?")) {
-                    const result = await fetch("/api/reset", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({token: localStorage.getItem("jwt")})
-                    })
-                    const status = result.status;
-                    if (status != 200) {
-                        alert(status  == 401 ? 'sign in again' : status)
-                        if (status == 401) {
-                            localStorage.removeItem("jwt")
-                        }
-                    }
-                    window.location.reload();
-                }
-            }
-            async function doOnLoad() {
-                setTimeout(() => {
-                    if (localStorage.getItem("jwt") != null) {
-                        adminToolsElm.style.display = "block";
-                    }
-                }, 100)
-                const result = await fetch("/api/get-sites", {method: "GET"});
-                const body = await result.json();
-                sitesHostedElm.innerText = body.length + " site(s) have been hosted here";
-            }
-            async function uploadSite() {
-
-            }
-            doOnLoad();
-        </script>
+        <script type="text/javascript" src="script.js"></script>
     </body>
 </html>
