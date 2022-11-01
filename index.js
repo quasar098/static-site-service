@@ -1,7 +1,9 @@
 require('dotenv').config()
-const express = require('express')
 const jwt = require('jsonwebtoken')
+const express = require('express')
+const http = require('http');
 const app = express()
+const server = http.createServer(app);
 const bcrypt = require('bcrypt')
 const auth = require("./middleware/auth");
 const bodyParser = require("body-parser");
@@ -114,6 +116,6 @@ app.use('/api/*', (req, res) => {
 
 app.use('*', express.static('public/page-not-found'))
 
-app.listen(port, () => {
-    console.log(`Listening on listening on port ${port}`)
+server.listen(process.env.PORT || port, () => {
+    console.log(`Listening on listening on port ${process.env.PORT || port}`)
 })
