@@ -20,6 +20,7 @@ function getDirectories(source) {
         .map(dirent => dirent.name)
 }
 
+
 let jsonParser = bodyParser.json()
 
 let admins = JSON.parse(process.env.ADMINS ?? '[]');
@@ -27,6 +28,8 @@ let admins = JSON.parse(process.env.ADMINS ?? '[]');
 function gp(...paths) {
     return path.join(__dirname, ...paths)
 }
+
+fse.ensureDirSync(gp("public/stored"))
 
 app.use(restrictip, express.static('public'))
 
