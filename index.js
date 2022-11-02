@@ -47,7 +47,7 @@ app.get("/api/title", (req, res) => {
     res.status(200).send(JSON.stringify({"title": process.env.TITLE ?? "Untitled Hoster"}))
 });
 
-app.post("/api/upload", restrictip, (req, res) => {
+app.post("/api/upload", jsonParser, restrictip, (req, res) => {
     const form = formidable({ multiples: true });
 
     form.parse(req, (err, fields, files) => {
@@ -143,10 +143,6 @@ app.post('/api/login', jsonParser, restrictip, (req, res) => {
 })
 
 app.get("/api/do-restrict-ip", jsonParser, restrictip, (req, res) => {
-    res.sendStatus(200);
-})
-
-app.get("/api/is-admin", jsonParser, restrictip, auth, (req, res) => {
     res.sendStatus(200);
 })
 

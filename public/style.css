@@ -7,11 +7,6 @@
 .anim {
     animation: fade-in 0.9s;
 }
-.admin {
-    position: absolute;
-    top: 0px;
-    right: 10px;
-}
 h3 {
     font-size: 28px;
     margin-bottom: 10px;

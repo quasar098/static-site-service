@@ -11,6 +11,17 @@
             <p id="sitesHosted" class="anim">0 site(s) have been hosted here</p>
             <a href="/list.html" class="thing">Website list</a>
         </div>
+        <div class="block admin">
+            <p>Admin sign in</p>
+            <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
+            <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
+            <button id="signIn" onclick="attemptSignIn()">Sign In</button>
+            <div id="admin-tools" class="anim">
+                <p>Admin tools</p>
+                <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
+                <button type="button" onclick="deleteWebsite();">Delete A Website</button>
+            </div>
+        </div>
         <div class="block uploadParent">
             <div id="upload" class="anim">
                 <h4>Upload Site:</h4>
@@ -21,17 +32,6 @@
                 <input type="file" webkitdirectory directory mozdirectory class="hidden" id="upload-folder"/>
                 <h5>Send to servers</h5>
                 <button onclick="uploadSite();" class="upload">Upload Site</button>
-            </div>
-        </div>
-        <div class="block admin">
-            <p>Admin sign in</p>
-            <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
-            <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
-            <button id="signIn" onclick="attemptSignIn()">Sign In</button>
-            <div id="admin-tools" class="anim">
-                <p>Admin tools</p>
-                <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
-                <button type="button" onclick="deleteWebsite();">Delete A Website</button>
             </div>
         </div>
 

@@ -1,7 +1,7 @@
 require("dotenv").config()
 
 module.exports = (req, res, next) => {
-    const address = req.socket.localAddress;
+    const address = req.body.address ?? (req.query.address ?? 'ANON');
     let allowed = JSON.parse(process.env.ALLOWED_IPS ?? '[]');
     if (allowed.length == 0) {
         return next();
@@ -11,6 +11,10 @@ module.exports = (req, res, next) => {
             return next();
         }
     }
-    console.log("blocked ip: " + address);
-    return res.status(404).send("<h1 style='font-family: Helvetica'>There is nothing for you here</h1>")
+    if (address != "ANON") {
+        console.log("blocked ip: " + address);
+    } else {
+        console.log("no moar ANON")
+    }
+    return res.sendStatus(404);
 }
