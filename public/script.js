@@ -44,11 +44,9 @@ async function resetWebsites() {
     }
 }
 async function doOnLoad() {
-    setTimeout(() => {
-        if (localStorage.getItem("jwt") != null) {
-            adminToolsElm.style.display = "block";
-        }
-    }, 100)
+    if (localStorage.getItem("jwt") != null) {
+        adminToolsElm.style.display = "block";
+    }
     const result = await fetch("/api/title", {method: "GET"});
     const title = await result.json();
     document.title = title.title;
