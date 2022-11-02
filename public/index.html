@@ -21,17 +21,15 @@
             <h5>Send to servers</h5>
             <button onclick="uploadSite();" class="upload">Upload Site</button>
         </div>
-        <footer>
-            <div class="block">
-                <p>Admin sign in</p>
-                <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
-                <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
-                <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
+        <div class="block admin">
+            <p>Admin sign in</p>
+            <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
+            <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
+            <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
+            <div id="admin-tools" class="anim">
+                <p>Admin tools</p>
+                <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
             </div>
-        </footer>
-        <div id="admin-tools" class="anim block">
-            <p>Admin tools</p>
-            <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
         </div>
 
 
