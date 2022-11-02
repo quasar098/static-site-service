@@ -6,25 +6,32 @@
         <link rel="stylesheet" href="/style.css">
     </head>
     <body>
-        <a href="/" class="thing">Go Back</a>
-        <div id="sites">
-
+        <a href="/" class="block">Go Back</a>
+        <div class="block">
+            <div id="sites" class="anim">
+                <p>No sites are being hosted</p>
+            </div>
         </div>
         <script type="text/javascript">
             let sitesElm = document.getElementById('sites');
-            let sites = [];
+            let sites = JSON.parse(localStorage.getItem("sshSites") ?? '[]');
+            updateSites();
             let isAdmin = false;
             function newSiteElm(name) {
                 let elm = document.createElement("a");
                 elm.innerText = name;
                 elm.setAttribute("href", "/stored/" + name + "/index.html");
+                elm.style.marginTop = "4px";
+                elm.style.marginBottom = "4px";
                 return elm;
             }
             function updateSites() {
-                sitesElm.innerHTML = "";
-                sites.forEach((item, i) => {
-                    sitesElm.appendChild(newSiteElm(item))
-                });
+                if (sites.length != 0) {
+                    sitesElm.innerHTML = "";
+                    sites.forEach((item, i) => {
+                        sitesElm.appendChild(newSiteElm(item))
+                    });
+                }
             }
             async function doOnLoad() {
                 setTimeout(() => {
@@ -33,6 +40,7 @@
                 }, 100)
                 const result = await fetch("/api/get-sites", {method: "GET"});
                 sites = await result.json();
+                localStorage.setItem("sshSites", JSON.stringify(sites))
                 updateSites();
             }
             doOnLoad();
