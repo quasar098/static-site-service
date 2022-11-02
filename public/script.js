@@ -1,4 +1,4 @@
-
+const siteTitleElm = document.getElementById('siteTitle');
 const adminToolsElm = document.getElementById("admin-tools");
 const sitesHostedElm = document.getElementById('sitesHosted');
 const uploadFolderElm = document.getElementById('upload-folder');
@@ -49,18 +49,26 @@ async function doOnLoad() {
             adminToolsElm.style.display = "block";
         }
     }, 100)
-    const result = await fetch("/api/get-sites", {method: "GET"});
-    const body = await result.json();
-    sitesHostedElm.innerText = body.length + " site(s) have been hosted here";
+    const result = await fetch("/api/title", {method: "GET"});
+    const title = await result.json();
+    document.title = title.title;
+    siteTitleElm.innerText = title.title;
+    const result2 = await fetch("/api/get-sites", {method: "GET"});
+    const body2 = await result2.json();
+    sitesHostedElm.innerText = body2.length + " site(s) have been hosted here";
 }
 async function uploadSite() {
     if (!siteIdElm.checkValidity()) {
-        alert("Wrong!")
+        alert("Please put in a Site ID (the name of the site)")
         return;
     }
 
     let form = new FormData();
     let files = uploadFolderElm.files;
+    if (files.length == 0) {
+        alert("Please upload some files!");
+        return;
+    }
 
     for (var i = 0; i < files.length; i++) {
         let file = files[i];

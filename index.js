@@ -25,13 +25,27 @@ let jsonParser = bodyParser.json()
 
 let admins = JSON.parse(process.env.ADMINS ?? '[]');
 
+if (admins.length == 0) {
+    console.log("Warning: there are no admin accounts!")
+}
+if (process.env.ALLOWED_IPS == undefined) {
+    console.log("Warning: all ips are allowed!")
+}
+if (process.env.JWT_SECRET == undefined) {
+    throw new Error("Err: you don't have a jwt secret");
+}
+
 function gp(...paths) {
     return path.join(__dirname, ...paths)
 }
 
 fse.ensureDirSync(gp("public/stored"))
 
-app.use(restrictip, express.static('public'))
+app.use(express.static('public'))
+
+app.get("/api/title", (req, res) => {
+    res.status(200).send(JSON.stringify({"title": process.env.TITLE ?? "Untitled Hoster"}))
+});
 
 app.post("/api/upload", restrictip, (req, res) => {
     const form = formidable({ multiples: true });

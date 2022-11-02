@@ -2,35 +2,43 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Static Websites</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
         <link rel="stylesheet" href="/style.css">
     </head>
     <body>
-        <h3>Static Website Hoster Thing</h3>
-        <h4>Stats: </h4>
-        <p id="sitesHosted">0 site(s) have been hosted here</p>
-        <a href="/list.html" class="thing">Website list</a>
-        <br>
-        <h4>Upload Site:</h4>
-        <h5>Name your site:</h5>
-        <input type="text" pattern="([A-Za-z]|\s){3,16}" id="site-id" placeholder="Site ID (3-16 letters or spaces)" spellcheck="false" required>
-        <h5>Upload the folder</h5>
-        <input type="file" webkitdirectory directory mozdirectory class="hidden" id="upload-folder"/>
-        <h5>Send to servers</h5>
-        <button onclick="uploadSite();" class="upload">Upload Site</button>
-        <br><br><br><br>
-        <p>Admin sign in</p>
-        <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
-        <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
-        <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
-        <div id="admin-tools">
-            <br><br>
+        <div class="block">
+            <h3 id="siteTitle" class="anim">...</h3>
+            <p id="sitesHosted" class="anim">0 site(s) have been hosted here</p>
+            <a href="/list.html" class="thing">Website list</a>
+        </div>
+        <div class="block">
+            <h4>Upload Site:</h4>
+            <h5>Name your site:</h5>
+            <input type="text" pattern="([A-Za-z]|\s){3,16}" id="site-id" placeholder="Site ID (3-16 letters or spaces)" spellcheck="false" required>
+            <i class="fa fa-check"></i>
+            <h5>Upload the folder</h5>
+            <input type="file" webkitdirectory directory mozdirectory class="hidden" id="upload-folder"/>
+            <h5>Send to servers</h5>
+            <button onclick="uploadSite();" class="upload">Upload Site</button>
+        </div>
+        <footer>
+            <div class="block">
+                <p>Admin sign in</p>
+                <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
+                <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
+                <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
+            </div>
+        </footer>
+        <div id="admin-tools" class="anim block">
             <p>Admin tools</p>
             <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
         </div>
 
 
-
+        <script
+          src="https://code.jquery.com/jquery-3.6.1.min.js"
+          integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+          crossorigin="anonymous"></script>
         <script type="text/javascript" src="script.js"></script>
     </body>
 </html>
