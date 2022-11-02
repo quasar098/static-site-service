@@ -100,6 +100,18 @@ app.post('/api/reset', jsonParser, restrictip, auth, (req, res) => {
     })
 })
 
+app.post("/api/delete", jsonParser, restrictip, auth, (req, res) => {
+    let siteName = req.body.name ?? "---";
+    fse.ensureDirSync(gp("public/stored", siteName));
+    fs.rm(gp("public/stored", siteName), { recursive: true }, (err) => {
+        if (err) {
+            console.log("error deleting:" + siteName);
+        }
+    })
+    console.log("deleted site:", siteName)
+    res.status(200).send("passta");
+})
+
 app.post('/api/login', jsonParser, restrictip, (req, res) => {
     if (req.body.password && req.body.username) {
         bcrypt.hash(req.body.password, 10, function(err, hash) {

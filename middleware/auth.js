@@ -4,6 +4,7 @@ require("dotenv").config()
 const verifyToken = (req, res, next) => {
     const token = req.body.token;
     if (!token) {  // no token present
+        console.log(req.body)
         res.status(403).send("A token is require for auth")
         return;
     }

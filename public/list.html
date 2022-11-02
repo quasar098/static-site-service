@@ -15,8 +15,8 @@
         <script type="text/javascript">
             let sitesElm = document.getElementById('sites');
             let sites = JSON.parse(localStorage.getItem("sshSites") ?? '[]');
-            updateSites();
             let isAdmin = false;
+            updateSites();
             function newSiteElm(name) {
                 let elm = document.createElement("a");
                 elm.innerText = name;
@@ -36,11 +36,10 @@
             async function doOnLoad() {
                 setTimeout(() => {
                     isAdmin = localStorage.getItem("jwt");
-
                 }, 100)
                 const result = await fetch("/api/get-sites", {method: "GET"});
                 sites = await result.json();
-                localStorage.setItem("sshSites", JSON.stringify(sites))
+                localStorage.setItem("sshSites", JSON.stringify(sites));
                 updateSites();
             }
             doOnLoad();

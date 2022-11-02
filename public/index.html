@@ -25,10 +25,11 @@
             <p>Admin sign in</p>
             <input type="text" placeholder="Username" id="usernameBox" autocomplete="off"/>
             <input type="password" placeholder="Password" id="passwordBox" autocomplete="off"/>
-            <button id="signIn" onclick="attemptSignIn(); updateCountBasedOnApi()">Sign In</button>
+            <button id="signIn" onclick="attemptSignIn()">Sign In</button>
             <div id="admin-tools" class="anim">
                 <p>Admin tools</p>
                 <button type="button" id="resetWebsites" onclick="resetWebsites();">Reset Websites</button>
+                <button type="button" onclick="deleteWebsite();">Delete A Website</button>
             </div>
         </div>
 

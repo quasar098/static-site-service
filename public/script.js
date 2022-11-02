@@ -84,4 +84,31 @@ async function uploadSite() {
     alert("Uploading...")
     window.location.reload();
 }
+async function deleteWebsite() {
+    let prompted = prompt("Name of site");
+    if (prompted == null) {
+        alert("ok boomer");
+        return;
+    }
+    console.log(123);
+    const result = await fetch("/api/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: prompted,
+            token: localStorage.getItem("jwt")
+        })
+    })
+    if (result.status != 200) {
+        if (result.status == 403) {
+            alert("sign in again")
+            localStorage.removeItem("jwt")
+        } else {
+            alert(result.status)
+        }
+    }
+    window.location.reload();
+}
 doOnLoad();
