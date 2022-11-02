@@ -143,6 +143,8 @@ app.use('/api/*', (req, res) => {
     res.status(404).send("invalid api request")
 })
 
+app.use(express.static('public/stored'))
+
 app.use('*', express.static('public/page-not-found'))
 
 server.listen(process.env.PORT || port, () => {
