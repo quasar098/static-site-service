@@ -2,6 +2,7 @@ const siteTitleElm = document.getElementById('siteTitle');
 const adminToolsElm = document.getElementById("admin-tools");
 const sitesHostedElm = document.getElementById('sitesHosted');
 const uploadFolderElm = document.getElementById('upload-folder');
+const uploadDiv = document.getElementById('upload');
 const siteIdElm = document.getElementById('site-id')
 
 async function attemptSignIn() {
@@ -47,13 +48,25 @@ async function doOnLoad() {
     if (localStorage.getItem("jwt") != null) {
         adminToolsElm.style.display = "block";
     }
+
+    // title
     const result = await fetch("/api/title", {method: "GET"});
     const title = await result.json();
     document.title = title.title;
     siteTitleElm.innerText = title.title;
+
+    // get sites
     const result2 = await fetch("/api/get-sites", {method: "GET"});
     const body2 = await result2.json();
     sitesHostedElm.innerText = body2.length + " site(s) have been hosted here";
+
+    // remove upload site
+    const result3 = await fetch("/api/do-restrict-ip", {method: "GET"})
+    if (result3.status == 200) {
+        uploadDiv.parentElement.style.opacity = "1"
+    }
+    console.log(result3.status);
+
 }
 async function uploadSite() {
     if (!siteIdElm.checkValidity()) {

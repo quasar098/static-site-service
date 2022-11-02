@@ -135,6 +135,14 @@ app.post('/api/login', jsonParser, restrictip, (req, res) => {
     }
 })
 
+app.get("/api/do-restrict-ip", jsonParser, restrictip, (req, res) => {
+    res.sendStatus(200);
+})
+
+app.get("/api/is-admin", jsonParser, restrictip, auth, (req, res) => {
+    res.sendStatus(200);
+})
+
 app.get("/api/get-sites", (req, res) => {
     res.status(200).send(JSON.stringify(getDirectories(gp('/public/stored'))))
 })
