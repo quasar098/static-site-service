@@ -5,6 +5,8 @@ const uploadFolderElm = document.getElementById('upload-folder');
 const uploadDiv = document.getElementById('upload');
 const siteIdElm = document.getElementById('site-id')
 
+let siteList = [];
+
 async function attemptSignIn() {
     const result = await (fetch("/api/login", {
         headers: {
@@ -58,20 +60,25 @@ async function doOnLoad() {
     // get sites
     const result2 = await fetch("/api/get-sites", {method: "GET"});
     const body2 = await result2.json();
-    sitesHostedElm.innerText = body2.length + " site(s) have been hosted here";
+    siteList = body2;
+    sitesHostedElm.innerText = siteList.length + " site(s) have been hosted here";
 
     // remove upload site
     const result3 = await fetch("/api/do-restrict-ip", {method: "GET"})
     if (result3.status == 200) {
         uploadDiv.parentElement.style.opacity = "1"
     }
-    console.log(result3.status);
 
 }
 async function uploadSite() {
     if (!siteIdElm.checkValidity()) {
         alert("Please put in a Site ID (the name of the site)")
         return;
+    }
+    if (siteList.includes(siteIdElm.value.replaceAll(" ", "-"))) {
+        if (!confirm("You are going to overwrite this site. Are you sure?")) {
+            return;
+        }
     }
 
     let form = new FormData();

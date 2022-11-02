@@ -56,9 +56,15 @@ app.post("/api/upload", restrictip, (req, res) => {
             return res.status(400);
         }
         let values = Object.values(files);
+        let siteName = keys[0].substring(0, keys[0].indexOf("/"));
         try {
-            if (fs.existsSync(gp("public/stored", keys[0].substring(0, keys[0].indexOf("/"))))) {
-                return res.status(403);
+            if (fs.existsSync(gp("public/stored", siteName))) {
+                fs.rmSync(gp("public/stored", siteName), { recursive: true, force: true }, (err) => {
+                    if (err) {
+                        console.log("error overwriting:", siteName);
+                        console.log(err);
+                    }
+                })
             }
         } catch (e) { console.log(e); return res.status(500) }
 
@@ -79,12 +85,13 @@ app.post("/api/upload", restrictip, (req, res) => {
 
             fs.copyFile(oldPath, newPath, (err) => {
                 if (err) {
+                    console.log("Error writing uploaded file")
                     console.log(err);
-                } else {
-                    console.log("Success! ", newPath)
                 }
             })
         }
+
+        console.log(siteName, "has been uploaded")
 
         res.status(200);
     });
