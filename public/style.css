@@ -19,6 +19,10 @@ a {
     color: #1e2ede;
     display: block;
 }
+.noUpload {
+    transition-duration: 0.3s;
+    opacity: 0;
+}
 .uploadParent {
     transition-duration: 0.3s;
     opacity: 0;

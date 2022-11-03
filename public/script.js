@@ -3,6 +3,7 @@ const adminToolsElm = document.getElementById("admin-tools");
 const sitesHostedElm = document.getElementById('sitesHosted');
 const uploadFolderElm = document.getElementById('upload-folder');
 const uploadDiv = document.getElementById('upload');
+const noUploadDiv = document.getElementById('no-upload');
 const adminDiv = document.getElementById('adminTool')
 const siteIdElm = document.getElementById('site-id')
 
@@ -83,7 +84,13 @@ async function doOnLoad() {
         method: "GET",
     })
     if (result3.status == 200) {
+        uploadDiv.parentElement.style.display = "block";
         uploadDiv.parentElement.style.opacity = "1";
+        noUploadDiv.style.opacity = "0";
+    } else {
+        uploadDiv.parentElement.style.display = "none";
+        uploadDiv.parentElement.style.opacity = "0";
+        noUploadDiv.style.opacity = "1";
     }
 
 }
