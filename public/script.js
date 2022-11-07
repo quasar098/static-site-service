@@ -148,9 +148,49 @@ async function deleteWebsite() {
         })
     })
     if (result.status != 200) {
-        if (result.status == 403) {
+        if (result.status == 403 || result.status == 401) {
             alert("sign in again")
             localStorage.removeItem("jwt")
+        } else {
+            alert(result.status)
+        }
+    }
+    window.location.reload();
+}
+async function renameWebsite() {
+    let oldName = prompt("old name of site");
+
+    if (oldName == null) {
+        alert("ok boomer");
+        return;
+    }
+
+    let newName = prompt("new name of site");
+
+    if (newName == null) {
+        alert("ok boomer");
+        return;
+    }
+
+    const result = await fetch("/api/rename?" + new URLSearchParams({
+        address: myIp
+    }), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            oldName: oldName,
+            newName: newName,
+            token: localStorage.getItem("jwt")
+        })
+    })
+    if (result.status != 200) {
+        if (result.status == 403 || result.status == 401) {
+            alert("sign in again")
+            localStorage.removeItem("jwt")
+        } else if (result.status == 304) {
+            alert("something went wrong");
         } else {
             alert(result.status)
         }

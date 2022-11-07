@@ -119,6 +119,22 @@ app.post("/api/delete", jsonParser, restrictip, auth, (req, res) => {
     res.status(200).send("passta");
 })
 
+app.post("/api/rename", jsonParser, restrictip, auth, (req, res) => {
+    let oldName = req.body.oldName;
+    let newName = req.body.newName;
+    if (!fs.existsSync(gp("public/stored", oldName))) {
+        return res.status(304).send("Original site not found");
+    };
+    if (fs.existsSync(gp("public/stored", newName))) {
+        return res.status(304).send("Cannot overwrite site");
+    };
+    fs.renameSync(
+        gp("public/stored", oldName),
+        gp("public/stored", newName)
+    );
+    res.status(200).send("Ok");
+})
+
 app.post('/api/login', jsonParser, restrictip, (req, res) => {
     if (req.body.password && req.body.username) {
         bcrypt.hash(req.body.password, 10, function(err, hash) {
